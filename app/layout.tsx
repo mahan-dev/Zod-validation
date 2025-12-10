@@ -3,6 +3,8 @@ import "@/app/globals.css";
 import { Noto_Sans } from "next/font/google";
 import { ReactNode } from "react";
 
+import Layout from "@/components/layout/Layout";
+
 const noto = Noto_Sans({
   weight: "200",
   subsets: ["latin"],
@@ -20,7 +22,9 @@ interface RootProps {
 export default function RootLayout({ children }: RootProps) {
   return (
     <html lang="en">
-      <body className={`${noto.className} antialiased`}>{children}</body>
+      <body className={`${noto.className} antialiased`}>
+        <Layout>{children}</Layout>
+      </body>
     </html>
   );
 }

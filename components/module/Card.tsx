@@ -1,7 +1,7 @@
 "use client";
 
 import { ChangeEvent, FormEvent, useState } from "react";
-import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import * as z from "zod";
 
 import { Button } from "@/ui/button";
@@ -18,18 +18,37 @@ import { Input } from "@/ui/input";
 import { Label } from "@/ui/label";
 
 export function CardModule() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [form, setForm] = useState({
+    email: "",
+    password: "",
+  });
 
   const loginSchema = z.object({
     email: z.email(),
-    password: z.string().min(4, "at least should be 4"),
+    password: z.string().min(4, "password should be 4 characters long or more"),
   });
+
+  const changeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    const { id, value } = e.target;
+    setForm({ ...form, [id]: value });
+  };
+
+  type LoginForm = z.infer<typeof loginSchema>;
 
   const submitHandler = (e: FormEvent) => {
     e.preventDefault();
-    console.log("hello");
+
+    const data: LoginForm = form;
+
+    try {
+      const dataResult = loginSchema.parse(data);
+      console.log(dataResult);
+    } catch (error) {
+      console.log(error);
+      if (error instanceof z.ZodError) {
+        toast.error(error.issues[0].message, { position: "top-center" });
+      }
+    }
   };
 
   return (
@@ -60,6 +79,8 @@ export function CardModule() {
                 id="email"
                 type="email"
                 placeholder="test@example.com"
+                onChange={changeHandler}
+                value={form.email}
                 required
               />
             </div>
@@ -80,6 +101,8 @@ export function CardModule() {
                 id="password"
                 type="password"
                 placeholder="password"
+                onChange={changeHandler}
+                value={form.password}
                 required
               />
             </div>
@@ -87,7 +110,7 @@ export function CardModule() {
         </form>
       </CardContent>
       <CardFooter className="flex-col gap-2">
-        <Button type="submit" className="w-full">
+        <Button onClick={submitHandler} type="submit" className="w-full">
           Login
         </Button>
         <Button variant="outline" className="w-full">
