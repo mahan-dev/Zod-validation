@@ -1,4 +1,10 @@
-import { Button } from "@/components/ui/button";
+"use client";
+
+import { ChangeEvent, FormEvent, useState } from "react";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+
+import { Button } from "@/ui/button";
 import {
   Card,
   CardAction,
@@ -7,11 +13,25 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+} from "@/ui/card";
+import { Input } from "@/ui/input";
+import { Label } from "@/ui/label";
 
 export function CardModule() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+
+  const loginSchema = z.object({
+    email: z.email(),
+    password: z.string().min(4, "at least should be 4"),
+  });
+
+  const submitHandler = (e: FormEvent) => {
+    e.preventDefault();
+    console.log("hello");
+  };
+
   return (
     <Card className="w-full max-w-sm">
       <CardHeader>
@@ -20,11 +40,16 @@ export function CardModule() {
           Enter your email below to login to your account
         </CardDescription>
         <CardAction>
-          <Button variant="link" className=" text-[1.1rem] underline-offset-[6px]">Sign Up</Button>
+          <Button
+            variant="link"
+            className=" text-[1.1rem] underline-offset-[6px]"
+          >
+            Sign Up
+          </Button>
         </CardAction>
       </CardHeader>
       <CardContent>
-        <form>
+        <form onSubmit={submitHandler}>
           <div className="flex flex-col gap-6">
             <div className="grid gap-2">
               <Label htmlFor="email" className="text-[0.9rem] font-bold">
