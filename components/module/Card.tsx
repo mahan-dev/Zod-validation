@@ -20,32 +20,43 @@ export function CardModule() {
           Enter your email below to login to your account
         </CardDescription>
         <CardAction>
-          <Button variant="link">Sign Up</Button>
+          <Button variant="link" className=" text-[1.1rem] underline-offset-[6px]">Sign Up</Button>
         </CardAction>
       </CardHeader>
       <CardContent>
         <form>
           <div className="flex flex-col gap-6">
             <div className="grid gap-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email" className="text-[0.9rem] font-bold">
+                Email
+              </Label>
               <Input
+                className="font-bold"
                 id="email"
                 type="email"
-                placeholder="m@example.com"
+                placeholder="test@example.com"
                 required
               />
             </div>
             <div className="grid gap-2">
               <div className="flex items-center">
-                <Label htmlFor="password">Password</Label>
+                <Label htmlFor="password" className="text-[0.9rem] font-bold">
+                  Password
+                </Label>
                 <a
                   href="#"
-                  className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
+                  className="ml-auto inline-block text-sm underline-offset-[6px] hover:underline"
                 >
                   Forgot your password?
                 </a>
               </div>
-              <Input id="password" type="password" required />
+              <Input
+                className="font-bold "
+                id="password"
+                type="password"
+                placeholder="password"
+                required
+              />
             </div>
           </div>
         </form>
