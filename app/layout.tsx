@@ -1,7 +1,7 @@
-import { ReactNode } from "react";
-import "./globals.css";
 import type { Metadata } from "next";
 import { Noto_Sans } from "next/font/google";
+import { ReactNode } from "react";
+import "@/globals.css";
 
 const noto = Noto_Sans({
   weight: "200",
