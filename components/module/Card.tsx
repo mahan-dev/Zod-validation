@@ -53,7 +53,7 @@ export function CardModule() {
         <CardAction>
           <Button
             variant="link"
-            className=" text-[1.1rem] underline-offset-[6px]"
+            className=" text-[1rem] underline-offset-[6px]"
           >
             Sign Up
           </Button>
@@ -103,13 +103,10 @@ export function CardModule() {
       </CardContent>
       <CardFooter className="flex-col gap-2">
         <Button
-          className="w-full cursor-pointer"
+          className="w-full cursor-pointer text-[0.9rem] font-semibold"
           onClick={() => submitHandler(formRef)}
         >
           Login
-        </Button>
-        <Button variant="outline" className="w-full">
-          Login with Google
         </Button>
       </CardFooter>
     </Card>
