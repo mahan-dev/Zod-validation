@@ -1,9 +1,8 @@
 "use client";
 
-import { ChangeEvent, FormEvent, useState } from "react";
-import { toast } from "sonner";
-import * as z from "zod";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 
+import { LoginForm, submitHandler } from "@/helper/submitHandler";
 import { Button } from "@/ui/button";
 import {
   Card,
@@ -23,33 +22,26 @@ export function CardModule() {
     password: "",
   });
 
-  const loginSchema = z.object({
-    email: z.email(),
-    password: z.string().min(4, "password should be 4 characters long or more"),
-  });
+  const formRef = useRef<LoginForm>(form);
+  useEffect(() => {
+    formRef.current = form;
+  }, [form]);
 
   const changeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
     setForm({ ...form, [id]: value });
   };
 
-  type LoginForm = z.infer<typeof loginSchema>;
-
-  const submitHandler = (e: FormEvent) => {
-    e.preventDefault();
-
-    const data: LoginForm = form;
-
-    try {
-      const dataResult = loginSchema.parse(data);
-      console.log(dataResult);
-    } catch (error) {
-      console.log(error);
-      if (error instanceof z.ZodError) {
-        toast.error(error.issues[0].message, { position: "top-center" });
-      }
-    }
+  const enterHandler = (e: KeyboardEvent) => {
+    if (e.key === "Enter") submitHandler(formRef);
   };
+
+  useEffect(() => {
+    window.addEventListener("keydown", enterHandler);
+    return () => {
+      window.removeEventListener("keydown", enterHandler);
+    };
+  }, []);
 
   return (
     <Card className="w-full max-w-sm">
@@ -68,7 +60,7 @@ export function CardModule() {
         </CardAction>
       </CardHeader>
       <CardContent>
-        <form onSubmit={submitHandler}>
+        <form onSubmit={(e) => e.preventDefault()}>
           <div className="flex flex-col gap-6">
             <div className="grid gap-2">
               <Label htmlFor="email" className="text-[0.9rem] font-bold">
@@ -110,7 +102,10 @@ export function CardModule() {
         </form>
       </CardContent>
       <CardFooter className="flex-col gap-2">
-        <Button onClick={submitHandler} type="submit" className="w-full">
+        <Button
+          className="w-full cursor-pointer"
+          onClick={() => submitHandler(formRef)}
+        >
           Login
         </Button>
         <Button variant="outline" className="w-full">
